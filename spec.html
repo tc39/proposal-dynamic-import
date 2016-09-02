@@ -10,7 +10,7 @@ contributors: Domenic Denicola
 <link rel="stylesheet" href="https://bterlson.github.io/ecmarkup/elements.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/solarized_light.min.css">
 
-<emu-intro>
+<emu-intro id="introduction">
   <h1>Introduction</h1>
 
   <p>Background explanatory material for this specification can be found in the <a href="https://github.com/domenic/proposal-import-function">domenic/proposal-import-function</a> repository. See also the <a href="https://github.com/tc39/proposal-import-function/issues">issues</a>.</p>
@@ -65,6 +65,51 @@ contributors: Domenic Denicola
       </ul>
 
       <p>The actual process performed is implementation defined, but typically consists of performing whatever I/O operations are necessary to allow HostResolveImportedModule to synchronously retrieve the appropriate Module Record. This might require performing similar normalization as HostResolveImportedModule as an initial step.</p>
+    </emu-clause>
+  </emu-clause>
+</emu-clause>
+
+<emu-clause id="sec-left-hand-side-expressions">
+  <h1>Left-Hand-Side Expressions</h1>
+  <h2>Syntax</h2>
+  <emu-grammar>
+    CallExpression[Yield] :
+      MemberExpression[?Yield] Arguments[?Yield]
+      SuperCall[?Yield]
+      <ins>ImportCall[?Yield]</ins>
+      CallExpression[?Yield] Arguments[?Yield]
+      CallExpression[?Yield] `[` Expression[+In, ?Yield] `]`
+      CallExpression[?Yield] `.` IdentifierName
+      CallExpression[?Yield] TemplateLiteral[?Yield]
+
+    <ins>ImportCall[Yield] :
+      `import` Arguments[?Yield]</ins>
+  </emu-grammar>
+
+  <p>(Also, many other instances of |CallExpression| need to get |ImportCall| added to them.)</p>
+
+  <emu-clause id="sec-import-calls">
+    <h1>Import Calls</h1>
+
+    <emu-clause id="sec-import-call-runtime-semantics-evaluation">
+      <h1>Runtime Semantics: Evaluation</h1>
+
+      <emu-grammar>ImportCall : `import` Arguments</emu-grammar>
+      <emu-alg>
+        1. Let _referencingScriptOrModule_ be ! GetActiveScriptOrModule().
+        1. Assert: _referencingScriptOrModule_ is a Script Record or Module Record (i.e. is not *null*).
+        1. Let _argList_ be ArgumentListEvaluation of |Arguments|.
+        1. ReturnIfAbrupt(_argList_).
+        1. Let _specifier_ be the first element of _argList_.
+        1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
+        1. Return _promiseCapability_.[[Promise]], but continue running the following steps:
+          1. Perform ! HostFetchImportedModule(_referencingScriptOrModule_, _specifier_). When it asynchronously completes, let _fetchResult_ be the resulting asynchronous completion value, and continue to the next step.
+          1. If _fetchResult_ is an abrupt completion, then perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _fetchResult_.[[Value]] »).
+          1. Otherwise,
+            1. Assert: _fetchResult_ is a normal completion and _fetchResult_.[[Value]] is *undefined*.
+            1. Let _moduleRecord_ be ! HostResolveImportedModule(_referencingScriptOrModule_, _specifier_).
+            1. Perform ! Call(_promiseCapability_.[[Resolve]], *undefined*, « _moduleRecord_.[[Namespace]] »).
+      </emu-alg>
     </emu-clause>
   </emu-clause>
 </emu-clause>
