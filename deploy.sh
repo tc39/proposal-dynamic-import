@@ -35,12 +35,12 @@ ssh-add deploy_key
 git clone $REPO out
 cd out
 git checkout $TARGET_BRANCH || git checkout --orphan $TARGET_BRANCH
-cd ..
 
 # Clean out existing contents
-rm -rf out/**/* || exit 0
+git reset --hard
 
 # Run our compile script
+cd ..
 doCompile
 
 # Now let's go have some fun with the cloned repo
