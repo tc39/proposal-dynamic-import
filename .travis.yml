@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - stable
+script:
+  - npm test
+  - bash ./deploy.sh
+env:
+  global:
+    - ENCRYPTION_LABEL: "TODO"
+    - COMMIT_AUTHOR_EMAIL: "d@domenic.me"
