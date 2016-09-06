@@ -68,6 +68,16 @@ Drafts of the [Loader](https://whatwg.github.io/loader/) ideas collection have a
 
 The biggest problem here, as previously noted by the spec's editors, is how to interpret the specifier argument to these functions. Since these are just functions, which are the same across the entire Realm and do not vary per script or module, the function must interpret its argument the same no matter from where it is called. (Unless something truly weird like stack inspection is implemented.) So likely this runs into similar problems as the document base URL issue for the `importModule` function above, where relative module specifiers become a bug farm and mismatch any nearby `import` declarations.
 
+### A new binding form
+
+At the July 2016 TC39 meeting, in a [discussion](https://github.com/benjamn/reify/blob/master/PROPOSAL.md) of a proposal for [nested `import` declarations](https://github.com/benjamn/reify/blob/master/PROPOSAL.md), the original proposal was rejected, but an alternative of `await import` was proposed as a potential path forward. This would be a new binding form (i.e. a new way of introducing names into the given scope), which would work only inside async functions.
+
+`await import` has not been fully developed, so it is hard to tell to what extent its goals and capabilities overlap with this proposal. However, my impression is that it would be complementary to this proposal; it's a sort of halfway between the static top-level `import` syntax, and the full dynamism enabled by `import()`.
+
+For example, it was explicitly stated at TC39 that the promise created by `await import` is never reified. This creates a simpler programming experience, but the reified promises returned by `import()` allow powerful techniques such as using promise combinators to race different modules or load modules in parallel. This explicit promise creation allows `import()` to be used in non-async-function contexts, whereas (like normal `await` expressions) `await import` would be restricted. It's also unclear whether `await import` would allow arbitrary strings as module specifiers, or would stick with the existing top-level `import` grammar which only allows string literals.
+
+My understanding is that `await import` is for more of a static case, allowing it to be integrated with bundling and tree-shaking tools while still allowing some lazy fetching and evaluation. `import()` can then be used as the lowest-level, most-powerful building block.
+
 ## Relation to existing work
 
 So far module work has taken place in three spaces:
