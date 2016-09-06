@@ -47,7 +47,7 @@ contributors: Domenic Denicola
       <h1><ins>Runtime Semantics: HostFetchImportedModule ( _referencingScriptOrModule_, _specifier_ )</ins></h1>
 
       <p>HostFetchImportedModule is an implementation defined abstract operation that asynchronously performs any necessary setup work in order to make available the module corresponding to the |ModuleSpecifier| String, _specifier_, occurring within the context of the script or module represented by the Script Record or Module Record _referencingScriptOrModule_. This prepares the host environment for future calls to HostResolveImportedModule with the same arguments.</p>
-      <p>The implementation of HostResolveImportedModule must conform to the following requirements:</p>
+      <p>The implementation of HostFetchImportedModule must conform to the following requirements:</p>
 
       <ul>
         <li>
