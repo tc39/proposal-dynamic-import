@@ -6,7 +6,7 @@ This is a work-in-progress repository for a proposal for adding a "function-like
 
 The existing syntactic forms for importing modules are static declarations. They accept a string literal as the module specifier, and introduce bindings into the local scope via a pre-runtime "linking" process. This is a great design for the 90% case, and supports important use cases such as static analysis, bundling tools, and tree shaking.
 
-However, it's also desirable to be able to dynamically load parts of a JavaScript application at runtime. This could be because of factors only known at runtime (such as the user's language), or for performance reasons (not loading code until it is likely to be used). Such dynamic code-loading has a long history, especially on the web, but also in Node.js (to delay startup costs). The existing `import` syntax does not support such use cases.
+However, it's also desirable to be able to dynamically load parts of a JavaScript application at runtime. This could be because of factors only known at runtime (such as the user's language), for performance reasons (not loading code until it is likely to be used), or for robustness reasons (surviving failure to load a non-critical module). Such dynamic code-loading has a long history, especially on the web, but also in Node.js (to delay startup costs). The existing `import` syntax does not support such use cases.
 
 Truly dynamic code loading also enables advanced scenarios, such as racing multiple modules against each other and choosing the first to successfully load.
 
