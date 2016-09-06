@@ -20,6 +20,38 @@ Here `specifier` will be interpreted the same way as in an `import` declaration 
 
 Like the existing JavaScript module specification, the exact mechanism for retrieving the module is left up to the host environment (e.g., web browsers or Node.js). This is done by introducing a new host-environment-implemented abstract operation, HostFetchImportedModule, in addition to reusing and slightly tweaking the existing HostResolveImportedModule.
 
+## Example
+
+Here you can see how `import()` enables lazy-loading modules upon navigation in a very simple single-page application:
+
+```html
+<!DOCTYPE html>
+<nav>
+  <a href="books.html" data-entry-module="books">Books</a>
+  <a href="movies.html" data-entry-module="movies">Movies</a>
+  <a href="video-games.html" data-entry-module="video-games">Video Games</a>
+</nav>
+
+<main>Content will load here!</main>
+
+<script>
+  const main = document.querySelector("main");
+  for (const link of document.querySelectorAll("nav > a")) {
+    link.addEventListener("click", e => {
+      e.preventDefault();
+
+      import(`./section-modules/${link.dataset.entryModule}.js`)
+        .then(module => {
+          module.loadPageInto(main);
+        })
+        .catch(err => {
+          main.textContent = err.message;
+        });
+    });
+  }
+</script>
+```
+
 ## Alternative solutions explored
 
 There are a number of other ways of potentially accomplishing the above use cases. Here we explain why we believe `import()` is the best possibility.
