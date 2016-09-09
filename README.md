@@ -20,6 +20,8 @@ Here `specifier` will be interpreted the same way as in an `import` declaration 
 
 Like the existing JavaScript module specification, the exact mechanism for retrieving the module is left up to the host environment (e.g., web browsers or Node.js). This is done by introducing a new host-environment-implemented abstract operation, HostFetchImportedModule, in addition to reusing and slightly tweaking the existing HostResolveImportedModule.
 
+(This two-tier structure of host operations is in place to preserve the semantics where HostResolveImportedModule always returns synchronously, using its argument's [[RequestedModules]] field. In this way, HostFetchImportedModule can be seen as a mechanism for dynamically populating the [[RequestedModules]] field. This is similar to how some host environments already fetch the module tree in ahead of time, to ensure all HostResolveImportedModule calls during module evaluation are able to find the requested module.)
+
 ## Example
 
 Here you can see how `import()` enables lazy-loading modules upon navigation in a very simple single-page application:
