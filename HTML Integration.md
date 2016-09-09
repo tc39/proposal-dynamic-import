@@ -29,6 +29,7 @@ We would define a new section for HostFetchImportedModule. The implementation wo
 
 1. Let _referencing script_ be _referencingScriptOrModule_.[[HostDefined]].
 1. Let _settings object_ be _referencing script_'s [settings object](https://html.spec.whatwg.org/multipage/webappapis.html#settings-object).
+1. Return undefined but continue running the following steps in parallel:
 1. Let _url_ be the result of resolving a module specifier given _referencing script_ and _specifier_. If the result is failure, asynchronously complete this algorithm with a `TypeError` exception and abort these steps.
 1. Let _credentials mode_ be `"omit"`.
 1. If _referencing script_ is a [module script](https://html.spec.whatwg.org/#module-script), set _credentials mode_ to _referencing script_'s [credentials mode](https://html.spec.whatwg.org/#concept-module-script-credentials-mode).
