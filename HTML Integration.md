@@ -19,7 +19,7 @@ The procedure to [**create a classic script**](https://html.spec.whatwg.org/mult
 
 The [integration with the JavaScript module system](https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-module-system) would be updated in a few ways.
 
-The introductory sentence of [**resolve a module specifier**](https://html.spec.whatwg.org/multipage/webappapis.html#resolve-a-module-specifier) would changed to say and link to _script_, instead of _module script_, as with the base URL changes above, it can now accept both.
+The introductory sentence of [**resolve a module specifier**](https://html.spec.whatwg.org/multipage/webappapis.html#resolve-a-module-specifier) would be changed to say and link to _script_, instead of _module script_, as with the base URL changes above, it can now accept both.
 
 The algorithm for [HostResolveImportedModule](https://html.spec.whatwg.org/multipage/webappapis.html#hostresolveimportedmodule(referencingmodule,-specifier)) would be updated with the new parameter name, _referencingScriptOrModule_, and the variable name _referencing module script_ would be changed to _referencing script_.
 
