@@ -54,6 +54,12 @@ Here you can see how `import()` enables lazy-loading modules upon navigation in 
 </script>
 ```
 
+Note the differences here compared to the usual `import` declaration:
+
+* `import()` can be used from scripts, not just from modules.
+* If `import()` is used in a module, it can occur anywhere at any level, and is not hoisted.
+* `import()` does not establish a dependency which can be statically analyzed, but instead dynamically imports a module's exports.
+
 ## Alternative solutions explored
 
 There are a number of other ways of potentially accomplishing the above use cases. Here we explain why we believe `import()` is the best possibility.
