@@ -54,6 +54,12 @@ Here you can see how `import()` enables lazy-loading modules upon navigation in 
 </script>
 ```
 
+Note the differences here with ES2015 `import`:
+* it can be used from script
+* if used in a module, it can occur anywhere at any level and is not hoisted
+* it does not establish a dependency which can be statically analyzed, but dynamically imports a module's exports
+* relative module specifiers are relative to the importing script, so if this script was loaded from `cdn.com`, then `./section-modules` would also be loaded from `cdn.com`
+
 ## Alternative solutions explored
 
 There are a number of other ways of potentially accomplishing the above use cases. Here we explain why we believe `import()` is the best possibility.
