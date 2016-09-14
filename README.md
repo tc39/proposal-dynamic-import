@@ -58,7 +58,9 @@ Note the differences here compared to the usual `import` declaration:
 
 * `import()` can be used from scripts, not just from modules.
 * If `import()` is used in a module, it can occur anywhere at any level, and is not hoisted.
-* `import()` does not establish a dependency which can be statically analyzed, but instead dynamically imports a module's exports.
+* `import()` accepts arbitrary strings (with runtime-determined template strings shown here), not just static string literals.
+* The presence of `import()` in the module does not establish a dependency which must be fetched and evaluated before the containing module is evaluated.
+* `import()` does not establish a dependency which can be statically analyzed. (However, implementations may still be able to perform speculative fetching in simpler cases like `import("./foo.js")`.)
 
 ## Alternative solutions explored
 
