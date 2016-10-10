@@ -86,7 +86,7 @@ contributors: Domenic Denicola
       CallExpression[?Yield] TemplateLiteral[?Yield]
 
     <ins>ImportCall[Yield] :
-      `import` ArgumentList[?Yield]</ins>
+      `import` `(` AssignmentExpression[+In, ?Yield] `)`</ins>
   </emu-grammar>
 
   <p>(Also, many other instances of |CallExpression| need to get |ImportCall| added to them.)</p>
@@ -97,13 +97,12 @@ contributors: Domenic Denicola
     <emu-clause id="sec-import-call-runtime-semantics-evaluation">
       <h1>Runtime Semantics: Evaluation</h1>
 
-      <emu-grammar>ImportCall : `import` Arguments</emu-grammar>
+      <emu-grammar>ImportCall : `import` `(` AssignmentExpression `)`</emu-grammar>
       <emu-alg>
         1. Let _referencingScriptOrModule_ be ! GetActiveScriptOrModule().
         1. Assert: _referencingScriptOrModule_ is a Script Record or Module Record (i.e. is not *null*).
-        1. Let _argList_ be ArgumentListEvaluation of |Arguments|.
-        1. ReturnIfAbrupt(_argList_).
-        1. Let _specifier_ be the first element of _argList_.
+        1. Let _argRef_ be the result of evaluating |AssignmentExpression|.
+        1. Let _specifier_ be ? GetValue(_argRef_).
         1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
         1. Return _promiseCapability_.[[Promise]], but continue running the following steps:
           1. Perform ! HostPrepareImportedModule(_referencingScriptOrModule_, _specifier_). When it asynchronously completes, let _prepareResult_ be the resulting asynchronous completion value, and continue to the next step.
