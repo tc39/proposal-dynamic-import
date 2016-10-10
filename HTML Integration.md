@@ -15,6 +15,8 @@ The procedure to [**create a classic script**](https://html.spec.whatwg.org/mult
 - The [`javascript:` URL processing algorithm](https://html.spec.whatwg.org/multipage/browsers.html#javascript-protocol) would pass along the _address_ variable, no cryptographic nonce, and `"not parser-inserted"`
 - The [timer initialization steps](https://html.spec.whatwg.org/#timer-initialisation-steps) used by `setTimeout` and `setInterval` would pass along the caller realm's API base URL, no cryptographic nonce, and `"not parser-inserted"`
 
+The [run a module script](https://html.spec.whatwg.org/multipage/webappapis.html#run-a-module-script) algorithm would need to be modified to take an optional _rethrow exceptions_ flag. If set, then instead of reporting the exception for any evaluation failure, it would re-throw it to the caller (after performing the final "clean up after running script" step). This is used below to ensure correct exception propagation.
+
 ## Integration with the JavaScript module system
 
 The [integration with the JavaScript module system](https://html.spec.whatwg.org/multipage/webappapis.html#integration-with-the-javascript-module-system) would be updated in a few ways.
@@ -23,9 +25,9 @@ The introductory sentence of [**resolve a module specifier**](https://html.spec.
 
 The algorithm for [HostResolveImportedModule](https://html.spec.whatwg.org/multipage/webappapis.html#hostresolveimportedmodule(referencingmodule,-specifier)) would be updated with the new parameter name, _referencingScriptOrModule_, and the variable name _referencing module script_ would be changed to _referencing script_.
 
-We would define a new section for HostFetchImportedModule. The implementation would be as follows:
+We would define a new section for HostPrepareImportedModule. The implementation would be as follows:
 
-### HostFetchImportedModule(_referencingScriptOrModule_, _specifier_)
+### HostPrepareImportedModule(_referencingScriptOrModule_, _specifier_)
 
 1. Let _referencing script_ be _referencingScriptOrModule_.[[HostDefined]].
 1. Let _settings object_ be _referencing script_'s [settings object](https://html.spec.whatwg.org/multipage/webappapis.html#settings-object).
@@ -33,4 +35,5 @@ We would define a new section for HostFetchImportedModule. The implementation wo
 1. Let _url_ be the result of resolving a module specifier given _referencing script_ and _specifier_. If the result is failure, asynchronously complete this algorithm with a `TypeError` exception and abort these steps.
 1. Let _credentials mode_ be `"omit"`.
 1. If _referencing script_ is a [module script](https://html.spec.whatwg.org/#module-script), set _credentials mode_ to _referencing script_'s [credentials mode](https://html.spec.whatwg.org/#concept-module-script-credentials-mode).
-1. [Fetch a module script tree](https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-module-script-tree) given _url_, _settings object_, `"script"`, _referencing script_'s [cryptographic nonce](https://html.spec.whatwg.org/#concept-module-script-nonce), _referencing script_'s [parser state](https://html.spec.whatwg.org/#concept-module-script-parser), and _credentials mode_. If fetching a module script tree asynchronously completes with null, asynchronously complete this algorithm with an abrupt completion whose value is a new `TypeError`. Otherwise, asynchronously complete this algorithm with a normal completion whose value is undefined.
+1. [Fetch a module script tree](https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-module-script-tree) given _url_, _settings object_, `"script"`, _referencing script_'s [cryptographic nonce](https://html.spec.whatwg.org/#concept-module-script-nonce), _referencing script_'s [parser state](https://html.spec.whatwg.org/#concept-module-script-parser), and _credentials mode_. If fetching a module script tree asynchronously completes with null, asynchronously complete this algorithm with an abrupt completion whose value is a new `TypeError`. Otherwise, let _module script_ be the asynchronous completion value, and continue this algorithm.
+1. [Run the module script](https://html.spec.whatwg.org/#run-a-module-script) _module script_, with the rethrow errors flag set. If running the module script throws an exception, asynchronously complete this algorithm with an abrupt completion whose value is the exception. Otherwise, asynchronously complete this algorithm with a normal completion whose value is undefined.
