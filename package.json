@@ -1,10 +1,10 @@
 {
   "private": true,
-  "name": "proposal-import-function",
+  "name": "proposal-dynamic-import",
   "description": "import() proposal for JavaScript (build setup only)",
   "author": "Domenic Denicola <d@domenic.me> (https://domenic.me/)",
   "license": "MIT",
-  "repository": "domenic/proposal-import-function",
+  "repository": "domenic/proposal-dynamic-import",
   "scripts": {
     "spec": "ecmarkup spec.html out/index.html",
     "watch": "ecmarkup --watch spec.html out/index.html"
