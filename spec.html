@@ -104,12 +104,14 @@ contributors: Domenic Denicola
         1. Let _argRef_ be the result of evaluating |AssignmentExpression|.
         1. Let _specifier_ be ? GetValue(_argRef_).
         1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
+        1. Let _specifierString_ be ToString(_specifier_).
+        1. IfAbruptRejectPromise(_specifierString_, _promiseCapability_).
         1. Return _promiseCapability_.[[Promise]], but continue running the following steps:
-          1. Perform ! HostPrepareImportedModule(_referencingScriptOrModule_, _specifier_). When it asynchronously completes, let _prepareResult_ be the resulting asynchronous completion value, and continue to the next step.
+          1. Perform ! HostPrepareImportedModule(_referencingScriptOrModule_, _specifierString_). When it asynchronously completes, let _prepareResult_ be the resulting asynchronous completion value, and continue to the next step.
           1. If _prepareResult_ is an abrupt completion, then perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _prepareResult_.[[Value]] »).
           1. Otherwise,
             1. Assert: _prepareResult_ is a normal completion and _prepareResult_.[[Value]] is *undefined*.
-            1. Let _moduleRecord_ be ! HostResolveImportedModule(_referencingScriptOrModule_, _specifier_).
+            1. Let _moduleRecord_ be ! HostResolveImportedModule(_referencingScriptOrModule_, _specifierString_).
             1. Assert: ModuleEvaluation has already been invoked on _moduleRecord_ and successfully completed.
             1. Perform ! Call(_promiseCapability_.[[Resolve]], *undefined*, « _moduleRecord_.[[Namespace]] »).
       </emu-alg>
