@@ -89,10 +89,114 @@ contributors: Domenic Denicola
       `import` `(` AssignmentExpression[+In, ?Yield] `)`</ins>
   </emu-grammar>
 
-  <p>(Also, many other instances of |CallExpression| need to get |ImportCall| added to them.)</p>
+  <emu-clause id="sec-static-semantics">
+    <h1>Static Semantics</h1>
+
+    <emu-clause id="sec-static-semantics-static-semantics-isfunctiondefinition">
+      <h1>Static Semantics: IsFunctionDefinition</h1>
+      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
+      <emu-grammar>
+        MemberExpression :
+          MemberExpression `[` Expression `]`
+          MemberExpression `.` IdentifierName
+          MemberExpression TemplateLiteral
+          SuperProperty
+          MetaProperty
+          `new` MemberExpression Arguments
+
+        NewExpression :
+          `new` NewExpression
+
+        CallExpression :
+          MemberExpression Arguments
+          SuperCall
+          <ins>ImportCall</ins>
+          CallExpression Arguments
+          CallExpression `[` Expression `]`
+          CallExpression `.` IdentifierName
+          CallExpression TemplateLiteral
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-static-semantics-static-semantics-isdestructuring">
+      <h1>Static Semantics: IsDestructuring</h1>
+      <emu-see-also-para op="IsDestructuring"></emu-see-also-para>
+      <emu-grammar>MemberExpression : PrimaryExpression</emu-grammar>
+      <emu-alg>
+        1. If |PrimaryExpression| is either an |ObjectLiteral| or an |ArrayLiteral|, return *true*.
+        1. Return *false*.
+      </emu-alg>
+      <emu-grammar>
+        MemberExpression :
+          MemberExpression `[` Expression `]`
+          MemberExpression `.` IdentifierName
+          MemberExpression TemplateLiteral
+          SuperProperty
+          MetaProperty
+          `new` MemberExpression Arguments
+
+        NewExpression :
+          `new` NewExpression
+
+        CallExpression :
+          MemberExpression Arguments
+          SuperCall
+          <ins>ImportCall</ins>
+          CallExpression Arguments
+          CallExpression `[` Expression `]`
+          CallExpression `.` IdentifierName
+          CallExpression TemplateLiteral
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+
+    <emu-clause id="sec-static-semantics-static-semantics-isvalidsimpleassignmenttarget">
+      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
+      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+      <emu-grammar>
+        CallExpression :
+          CallExpression `[` Expression `]`
+          CallExpression `.` IdentifierName
+
+        MemberExpression :
+          MemberExpression `[` Expression `]`
+          MemberExpression `.` IdentifierName
+          SuperProperty
+      </emu-grammar>
+      <emu-alg>
+        1. Return *true*.
+      </emu-alg>
+      <emu-grammar>
+        CallExpression :
+          MemberExpression Arguments
+          SuperCall
+          <ins>ImportCall</ins>
+          CallExpression Arguments
+          CallExpression TemplateLiteral
+
+        NewExpression :
+          `new` NewExpression
+
+        MemberExpression :
+          MemberExpression TemplateLiteral
+          `new` MemberExpression Arguments
+
+        NewTarget :
+          `new` `.` `target`
+      </emu-grammar>
+      <emu-alg>
+        1. Return *false*.
+      </emu-alg>
+    </emu-clause>
+  </emu-clause>
 
   <emu-clause id="sec-import-calls">
-    <h1>Import Calls</h1>
+    <h1><ins>Import Calls</ins></h1>
 
     <emu-clause id="sec-import-call-runtime-semantics-evaluation">
       <h1>Runtime Semantics: Evaluation</h1>
