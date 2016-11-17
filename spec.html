@@ -46,38 +46,38 @@ contributors: Domenic Denicola
     <emu-clause id="sec-hostimportmoduledynamically" aoid="HostImportModuleDynamically">
       <h1><ins>Runtime Semantics: HostImportModuleDynamically ( _referencingScriptOrModule_, _specifier_, _promiseCapability_ )</ins></h1>
 
-      <p>HostImportModuleDynamically is an implementation defined abstract operation that performs any necessary setup work in order to make available the module corresponding to the |ModuleSpecifier| String, _specifier_, occurring within the context of the script or module represented by the Script Record or Module Record _referencingScriptOrModule_. It then enqueues a DynamicImportPreparationFinishedJob to finish the dynamic import process.</p>
+      <p>HostImportModuleDynamically is an implementation defined abstract operation that performs any necessary setup work in order to make available the module corresponding to the |ModuleSpecifier| String, _specifier_, occurring within the context of the script or module represented by the Script Record or Module Record _referencingScriptOrModule_. It then enqueues a DynamicImportFinishedJob to finish the dynamic import process.</p>
 
       <p>The implementation of HostImportModuleDynamically must conform to the following requirements:</p>
 
       <ul>
         <li>
-          The abstract operation must always complete with *undefined*. Success or failure must instead be signaled as discussed below.
+          The abstract operation must always complete normally with *undefined*. Success or failure must instead be signaled as discussed below.
         </li>
         <li>
-          If the operation succeeds, then either immediately or at some future time the host environment must perform EnqueueJob(`"ScriptJobs"`, DynamicImportPreparationFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*) »).
+          If the operation succeeds, then either immediately or at some future time the host environment must perform EnqueueJob(`"ScriptJobs"`, DynamicImportFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*) »).
         </li>
         <li>
-          If the operation succeeds, then either immediately or at some future time the host environment must perform EnqueueJob(`"ScriptJobs"`, DynamicImportPreparationFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion ») with the abrupt completion representing the cause of failure.
+          If the operation fails, then either immediately or at some future time the host environment must perform EnqueueJob(`"ScriptJobs"`, DynamicImportFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion ») with the abrupt completion representing the cause of failure.
         </li>
         <li>
           If the operation succeeds, a subsequent call to HostResolveImportedModule given the same arguments must complete normally.
         </li>
         <li>
-          If the operation succeeds, the completion value of a subsequent call to HostResolveImportedModule given the same arguments must be a module which has already been evaluated, i.e. whose ModuleEvaluation concrete method has already been called and returned a normal completion.
+          If the operation succeeds, the completion value of a subsequent call to HostResolveImportedModule given the arguments _referencingScriptOrModule_ and _specifier_ must be a module which has already been evaluated, i.e. whose ModuleEvaluation concrete method has already been called and returned a normal completion.
         </li>
         <li>
-          The operation must not manipulate _promiseCapability_ in any way (e.g. by calling its [[Resolve]] or [[Reject]] functions), but instead must treat it as an opaque identifying value to be passed through to DynamicImportPreparationFinishedJob.
+          The operation must not call _promiseCapability_.[[Resolve]] or _promiseCapability_.[[Reject]], but instead must treat _promiseCapability_ as an opaque identifying value to be passed through to DynamicImportFinishedJob.
         </li>
       </ul>
 
-      <p>The actual process performed is implementation defined, but typically consists of performing whatever I/O operations are necessary to allow HostResolveImportedModule to synchronously retrieve the appropriate Module Record, and then calling its ModuleEvaluation concrete method. This might require performing similar normalization as HostResolveImportedModule does during an initial step.</p>
+      <p>The actual process performed is implementation defined, but typically consists of performing whatever I/O operations are necessary to allow HostResolveImportedModule to synchronously retrieve the appropriate Module Record, and then calling its ModuleEvaluation concrete method. This might require performing similar normalization as HostResolveImportedModule does.</p>
     </emu-clause>
 
-    <emu-clause id="sec-dynamicimportpreparationfinishedjob" aoid="DynamicImportPreparationFinishedJob">
-      <h1><ins>Runtime Semantics: DynamicImportPreparationFinishedJob ( _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ )</ins></h1>
+    <emu-clause id="sec-dynamicimportfinishedjob" aoid="DynamicImportFinishedJob">
+      <h1><ins>Runtime Semantics: DynamicImportFinishedJob ( _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ )</ins></h1>
 
-      <p>A DynamicImportPreparationFinishedJob completes the process of a dynamic import originally started by an `import()` call, resolving or rejecting the promise returned by that call as appropriate according to _completion_. It is enqueued by host environments as part of HostImportModuleDynamically.</p>
+      <p>A DynamicImportFinishedJob completes the process of a dynamic import originally started by an `import()` call, resolving or rejecting the promise returned by that call as appropriate according to _completion_. It is enqueued by host environments as part of HostImportModuleDynamically.</p>
 
       <emu-alg>
         1. If _completion_ is an abrupt completion, then perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _completion_.[[Value]] »).

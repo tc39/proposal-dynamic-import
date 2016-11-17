@@ -38,14 +38,14 @@ We would define a new section for HostImportModuleDynamically. The implementatio
 1. [Fetch a module script tree](https://html.spec.whatwg.org/multipage/webappapis.html#fetch-a-module-script-tree) given _url_, _settings object_, `"script"`, _referencing script_'s [cryptographic nonce](https://html.spec.whatwg.org/#concept-module-script-nonce), _referencing script_'s [parser state](https://html.spec.whatwg.org/#concept-module-script-parser), and _credentials mode_.
 1. If fetching a module script tree asynchronously completes with null, then
   1. Let _completion_ be Completion{[[Type]]: throw, [[Value]]: a new `TypeError`, [[Target]]: empty}.
-  1. Perform EnqueueJob("ScriptJobs", DynamicImportPreparationFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ »).
+  1. Perform EnqueueJob("ScriptJobs", DynamicImportFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ »).
 1. Otherwise,
   1. Let _module script_ be the asynchronous completion value of fetching a module script tree.
   1. [Run the module script](https://html.spec.whatwg.org/#run-a-module-script) _module script_, with the rethrow errors flag set.
   1. If running the module script throws an exception, then
     1. Let _completion_ be Completion{[[Type]]: throw, [[Value]]: the thrown exception, [[Target]]: empty}.
-    1. Perform EnqueueJob("ScriptJobs", DynamicImportPreparationFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ »).
-  1. Otherwise, perform EnqueueJob("ScriptJobs", DynamicImportPreparationFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(undefined) »).
+    1. Perform EnqueueJob("ScriptJobs", DynamicImportFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ »).
+  1. Otherwise, perform EnqueueJob("ScriptJobs", DynamicImportFinishedJob, « _referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(undefined) »).
 
 ## Miscellaneous
 
