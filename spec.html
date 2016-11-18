@@ -55,16 +55,31 @@ contributors: Domenic Denicola
           The abstract operation must always complete normally with *undefined*. Success or failure must instead be signaled as discussed below.
         </li>
         <li>
-          If the operation succeeds, then either immediately or at some future time the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*)).
+          The host environment must conform to one of the two following sets of requirements:
+          <dl>
+            <dt>Success path</dt>
+
+            <dd>
+              <ul>
+                <li>Either immediately or at some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*)).</li>
+
+                <li>Any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must complete normally.</li>
+
+                <li>The completion value of any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must be a module which has already been evaluated, i.e. whose ModuleEvaluation concrete method has already been called and returned a normal completion.</li>
+              </ul>
+            </dd>
+
+            <dt>Failure path</dt>
+
+            <dd>
+              <ul>
+                <li>Either immediately or at some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion), with the abrupt completion representing the cause of failure.</li>
+              </ul>
+            </dd>
+          </dl>
         </li>
         <li>
-          If the operation fails, then either immediately or at some future time the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion) with the abrupt completion representing the cause of failure.
-        </li>
-        <li>
-          If the operation succeeds, a subsequent call to HostResolveImportedModule after FinishDynamicImport has been performed, given the arguments _referencingScriptOrModule_ and _specifier_, must complete normally.
-        </li>
-        <li>
-          If the operation succeeds, the completion value of a subsequent call to HostResolveImportedModule after FinishDynamicImport has been performed, given the arguments _referencingScriptOrModule_ and _specifier_, must be a module which has already been evaluated, i.e. whose ModuleEvaluation concrete method has already been called and returned a normal completion.
+          Every call to HostImportModuleDynamically with the same _referencingScriptOrModule_ and _specifier_ arguments must conform to the <em>same</em> set of requirements above as previous calls do. That is, if the host environment takes the success path once for a given _referencingScriptOrModule_, _specifier_ pair, it must always do so, and the same for the failure path.
         </li>
         <li>
           The operation must not call _promiseCapability_.[[Resolve]] or _promiseCapability_.[[Reject]], but instead must treat _promiseCapability_ as an opaque identifying value to be passed through to DynamicImportFinishedJob.
