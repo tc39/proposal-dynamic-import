@@ -6,8 +6,8 @@
   "license": "MIT",
   "repository": "tc39/proposal-dynamic-import",
   "scripts": {
-    "spec": "ecmarkup spec.html out/index.html",
-    "watch": "ecmarkup --watch spec.html out/index.html"
+    "spec": "ecmarkup spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css",
+    "watch": "ecmarkup --watch spec.html out/index.html --js out/ecmarkup.js --css out/ecmarkup.css"
   },
   "devDependencies": {
     "ecmarkup": "^3.5.1"
