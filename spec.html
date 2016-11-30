@@ -61,7 +61,7 @@ contributors: Domenic Denicola
 
             <dd>
               <ul>
-                <li>Either immediately or at some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*)).</li>
+                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*)).</li>
 
                 <li>Any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must complete normally.</li>
 
@@ -73,7 +73,7 @@ contributors: Domenic Denicola
 
             <dd>
               <ul>
-                <li>Either immediately or at some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion), with the abrupt completion representing the cause of failure.</li>
+                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion), with the abrupt completion representing the cause of failure.</li>
               </ul>
             </dd>
           </dl>
