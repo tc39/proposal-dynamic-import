@@ -77,6 +77,8 @@ contributors: Domenic Denicola
               </ul>
             </dd>
           </dl>
+
+          <emu-note><p>The intent of this specification is to not violate run to completion semantics. The spec-level formalization of this is a work-in-progress.</p></emu-note>
         </li>
         <li>
           Every call to HostImportModuleDynamically with the same _referencingScriptOrModule_ and _specifier_ arguments must conform to the <em>same</em> set of requirements above as previous calls do. That is, if the host environment takes the success path once for a given _referencingScriptOrModule_, _specifier_ pair, it must always do so, and the same for the failure path.
