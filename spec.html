@@ -246,7 +246,7 @@ contributors: Domenic Denicola
         1. Let _promiseCapability_ be ! NewPromiseCapability(%Promise%).
         1. Let _specifierString_ be ToString(_specifier_).
         1. IfAbruptRejectPromise(_specifierString_, _promiseCapability_).
-        1. Perform ! HostImportModuleDynamically(_referencingScriptOrModule_, _specifierString_).
+        1. Perform ! HostImportModuleDynamically(_referencingScriptOrModule_, _specifierString_, _promiseCapability_).
         1. Return _promiseCapability_.[[Promise]].
       </emu-alg>
     </emu-clause>
