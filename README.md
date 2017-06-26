@@ -134,4 +134,4 @@ This proposal would be a small expansion of the existing JavaScript and HTML cap
 
 The ideas in the Loader specification would largely stay the same, although probably this would either supplant the current `System.loader.import()` proposal or make `System.loader.import()` a lower-level version that is used in specialized circumstances. The Loader specification would continue to work on prototyping more general ideas for pluggable loading pipelines and reflective modules, which over time could be used to generalize HTML and Node's host-specific pipelines.
 
-Concretely, this repository is intended as a TC39 proposal to advance through the stages process, specifying the `import()` syntax and the relevant host environment hooks. It also contains [an outline of proposed changes to the HTML Standard](HTML Integration.md) that would integrate with this proposal.
+Concretely, this repository is intended as a TC39 proposal to advance through the stages process, specifying the `import()` syntax and the relevant host environment hooks. It also contains [an outline of proposed changes to the HTML Standard](HTML%20Integration.md) that would integrate with this proposal.
