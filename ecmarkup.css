@@ -167,19 +167,16 @@ emu-production {
     margin-left: 5ex;
 }
 
-
 emu-grammar.inline, emu-production.inline,
-emu-grammar.inline emu-production emu-rhs, emu-production.inline emu-rhs {
-  display: inline;
+emu-grammar.inline emu-production emu-rhs, emu-production.inline emu-rhs,
+emu-grammar[collapsed] emu-production emu-rhs, emu-production[collapsed] emu-rhs {
+    display: inline;
+    padding-left: 1ex;
+    margin-left: 0;
 }
 
 emu-grammar[collapsed] emu-production, emu-production[collapsed] {
     margin: 0;
-}
-
-emu-grammar[collapsed] emu-production emu-rhs, emu-production[collapsed] emu-rhs {
-    display: inline;
-    padding-left: 1ex;
 }
 
 emu-constraints {
@@ -436,6 +433,18 @@ ins.block, del.block,
 emu-production > ins, emu-production > del,
 emu-grammar > ins, emu-grammar > del {
   display: block;
+}
+
+tr.ins > td > ins {
+  border-bottom: none;
+}
+
+tr.ins > td {
+  background-color: #e0f8e0;
+}
+
+tr.del > td {
+  background-color: #fee;
 }
 
 /* Menu Styles */
