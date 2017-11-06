@@ -126,7 +126,7 @@ My understanding is that `await import` is for more of a static case, allowing i
 
 So far module work has taken place in three spaces:
 
-- [The JavaScript specification](https://tc39.github.io/ecma262/#sec-modules), which mostly defines the syntax of modules, defering to the host environment via [HostResolveImportedModule](https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule);
+- [The JavaScript specification](https://tc39.github.io/ecma262/#sec-modules), which mostly defines the syntax of modules, deferring to the host environment via [HostResolveImportedModule](https://tc39.github.io/ecma262/#sec-hostresolveimportedmodule);
 - [The HTML Standard](https://html.spec.whatwg.org/multipage/), which defines [`<script type="module">`](https://html.spec.whatwg.org/multipage/scripting.html#the-script-element), how to [fetch modules](https://html.spec.whatwg.org/multipage/webappapis.html#fetching-scripts), and fulfills its duties as a host environment by specifying [HostResolveImportedModule](https://html.spec.whatwg.org/multipage/webappapis.html#hostresolveimportedmodule(referencingmodule,-specifier)) on top of those foundations;
 - [The Loader specification](https://whatwg.github.io/loader/), which is a collection of interesting ideas prototyping ways of creating a runtime-configurable loading pipeline and creating modules reflectively (i.e. not from source text)
 
