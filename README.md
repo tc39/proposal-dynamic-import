@@ -75,21 +75,22 @@ It's possible to dynamically load modules in certain host environments, such as 
 ```js
 
 function importModule(url) {
+  let id = 0;
   return new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    const tempGlobal = "__tempModuleLoadingVariable" + Math.random().toString(32).substring(2);
+    const tempProp = `__tempModuleLoadingVariable${i++}_` + Math.random().toString(32).substring(2);
     script.type = "module";
-    script.textContent = `import * as m from "${url}"; window.${tempGlobal} = m;`;
+    script.textContent = `import * as m from "${url}"; importModule.${tempProp} = m;`;
 
     script.onload = () => {
-      resolve(window[tempGlobal]);
-      delete window[tempGlobal];
+      resolve(importModule[tempProp]);
+      delete importModule[tempProp];
       script.remove();
     };
 
     script.onerror = () => {
       reject(new Error("Failed to load module script with URL " + url));
-      delete window[tempGlobal];
+      delete importModule[tempProp];
       script.remove();
     };
 
@@ -98,7 +99,7 @@ function importModule(url) {
 }
 ```
 
-However, this has a number of deficiencies, apart from the obvious ugliness of creating a temporary global variable and inserting a `<script>` element into the document tree only to remove it later.
+However, this has a number of deficiencies, apart from the obvious ugliness of inserting a `<script>` element into the document tree only to remove it later.
 
 The most obvious is that it takes a URL, not a module specifier; furthermore, that URL is relative to the document's URL, and not to the script executing. This introduces a needless impedance mismatch for developers, as they need to switch contexts when using the different ways of importing modules, and it makes relative URLs a potential bug-farm.
 
