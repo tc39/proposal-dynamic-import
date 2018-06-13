@@ -119,7 +119,11 @@ Search.prototype.search = function (searchString) {
     
     for (var i = 0; i < this.biblio.length; i++) {
       var entry = this.biblio[i];
-  
+      if (!entry.key) {
+        // biblio entries without a key aren't searchable
+        continue;
+      }
+
       var match = fuzzysearch(searchString, entry.key);
       if (match) {
         results.push({ entry: entry, match: match });
