@@ -65,7 +65,7 @@ contributors: Domenic Denicola
 
                 <li>Any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must complete normally.</li>
 
-                <li>The completion value of any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must be a module which has already been evaluated, i.e. whose ModuleEvaluation concrete method has already been called and returned a normal completion.</li>
+                <li>The completion value of any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must be a module which has already been evaluated, i.e. whose Evaluate concrete method has already been called and returned a normal completion.</li>
               </ul>
             </dd>
 
@@ -88,7 +88,7 @@ contributors: Domenic Denicola
         </li>
       </ul>
 
-      <p>The actual process performed is implementation defined, but typically consists of performing whatever I/O operations are necessary to allow HostResolveImportedModule to synchronously retrieve the appropriate Module Record, and then calling its ModuleEvaluation concrete method. This might require performing similar normalization as HostResolveImportedModule does.</p>
+      <p>The actual process performed is implementation defined, but typically consists of performing whatever I/O operations are necessary to allow HostResolveImportedModule to synchronously retrieve the appropriate Module Record, and then calling its Evaluate concrete method. This might require performing similar normalization as HostResolveImportedModule does.</p>
     </emu-clause>
 
     <emu-clause id="sec-finishdynamicimport" aoid="FinishDynamicImport">
@@ -101,7 +101,7 @@ contributors: Domenic Denicola
         1. Otherwise,
           1. Assert: _completion_ is a normal completion and _completion_.[[Value]] is *undefined*.
           1. Let _moduleRecord_ be ! HostResolveImportedModule(_referencingScriptOrModule_, _specifierString_).
-          1. Assert: ModuleEvaluation has already been invoked on _moduleRecord_ and successfully completed.
+          1. Assert: Evaluate has already been invoked on _moduleRecord_ and successfully completed.
           1. Let _namespace_ be GetModuleNamespace(_moduleRecord_).
           1. If _namespace_ is an abrupt completion, perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _namespace_.[[Value]] »).
           1. Otherwise, perform ! Call(_promiseCapability_.[[Resolve]], *undefined*, « _namespace_.[[Value]] »).
