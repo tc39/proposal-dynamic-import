@@ -25,7 +25,16 @@ contributors: Domenic Denicola
     <emu-clause id="sec-hostresolveimportedmodule" aoid="HostResolveImportedModule">
       <h1>Runtime Semantics: HostResolveImportedModule ( <del>_referencingModule_</del><ins>_referencingScriptOrModule_</ins>, _specifier_ )</h1>
 
-      <p>HostResolveImportedModule is an implementation defined abstract operation that provides the concrete Module Record subclass instance that corresponds to the |ModuleSpecifier| String, _specifier_, occurring within the context of the <ins>script or </ins>module represented by the <ins>Script Record or </ins>Module Record <del>_referencingModule_</del><ins>_referencingScriptOrModule_</ins>.</p>
+      <p>HostResolveImportedModule is an implementation defined abstract operation that provides the concrete Module Record subclass instance that corresponds to the |ModuleSpecifier| String, _specifier_, occurring within the context of the <ins>script or </ins>module represented by the <ins>Script Record or </ins>Module Record <del>_referencingModule_</del><ins>_referencingScriptOrModule_</ins>. <ins>_referencingScriptOrModule_ may also be *null*, if the resolution is being performed in the context of an `import()` expression, and there is no active script or module at that time.</ins></p>
+
+      <emu-note>
+        <p>An example of when _referencingScriptOrModule_ can be *null* is in a web browser host. There, if a user clicks on a control given by</p>
+
+        <pre><code class="html">&lt;button onclick="import('./foo.mjs')">Click me&lt;/button></code></pre>
+
+        <p>there will be no active script or module at the time the `import()` expression runs. More generally, this can happen in any situation where the host pushes execution contexts with *null* ScriptOrModule components onto the execution context stack.</p>
+      </emu-note>
+
       <p>The implementation of HostResolveImportedModule must conform to the following requirements:</p>
 
       <ul>
@@ -46,7 +55,7 @@ contributors: Domenic Denicola
     <emu-clause id="sec-hostimportmoduledynamically" aoid="HostImportModuleDynamically">
       <h1><ins>Runtime Semantics: HostImportModuleDynamically ( _referencingScriptOrModule_, _specifier_, _promiseCapability_ )</ins></h1>
 
-      <p>HostImportModuleDynamically is an implementation defined abstract operation that performs any necessary setup work in order to make available the module corresponding to the |ModuleSpecifier| String, _specifier_, occurring within the context of the script or module represented by the Script Record or Module Record _referencingScriptOrModule_. It then performs FinishDynamicImport to finish the dynamic import process.</p>
+      <p>HostImportModuleDynamically is an implementation defined abstract operation that performs any necessary setup work in order to make available the module corresponding to the |ModuleSpecifier| String, _specifier_, occurring within the context of the script or module represented by the Script Record or Module Record _referencingScriptOrModule_. (_referencingScriptOrModule_ may also be *null*, if there is no active script or module when the `import()` expression occurs.) It then performs FinishDynamicImport to finish the dynamic import process.</p>
 
       <p>The implementation of HostImportModuleDynamically must conform to the following requirements:</p>
 
