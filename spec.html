@@ -70,7 +70,7 @@ contributors: Domenic Denicola
 
             <dd>
               <ul>
-                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, NormalCompletion(*undefined*)).</li>
+                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, Promise.resolve(*undefined*)).</li>
 
                 <li>Any subsequent call to HostResolveImportedModule after FinishDynamicImport has completed, given the arguments _referencingScriptOrModule_ and _specifier_, must complete normally.</li>
 
@@ -82,7 +82,7 @@ contributors: Domenic Denicola
 
             <dd>
               <ul>
-                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, an abrupt completion), with the abrupt completion representing the cause of failure.</li>
+                <li>At some future time, the host environment must perform FinishDynamicImport(_referencingScriptOrModule_, _specifier_, _promiseCapability_, Promise.reject(an error)), with the error representing the cause of failure.</li>
               </ul>
             </dd>
           </dl>
@@ -101,19 +101,21 @@ contributors: Domenic Denicola
     </emu-clause>
 
     <emu-clause id="sec-finishdynamicimport" aoid="FinishDynamicImport">
-      <h1><ins>Runtime Semantics: FinishDynamicImport ( _referencingScriptOrModule_, _specifier_, _promiseCapability_, _completion_ )</ins></h1>
+      <h1><ins>Runtime Semantics: FinishDynamicImport ( _referencingScriptOrModule_, _specifier_, _promiseCapability_, _innerPromise_ )</ins></h1>
 
       <p>FinishDynamicImport completes the process of a dynamic import originally started by an `import()` call, resolving or rejecting the promise returned by that call as appropriate according to _completion_. It is performed by host environments as part of HostImportModuleDynamically.</p>
 
       <emu-alg>
-        1. If _completion_ is an abrupt completion, then perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _completion_.[[Value]] »).
-        1. Otherwise,
-          1. Assert: _completion_ is a normal completion and _completion_.[[Value]] is *undefined*.
+        1. Upon fulfillment of _innerPromise_ with value _v_,
+          1. Assert: _v_ is *undefined*.
           1. Let _moduleRecord_ be ! HostResolveImportedModule(_referencingScriptOrModule_, _specifier_).
           1. Assert: Evaluate has already been invoked on _moduleRecord_ and successfully completed.
+          1. Assert: _moduleRecord_.[[ExecPromise]] is resolved.
           1. Let _namespace_ be GetModuleNamespace(_moduleRecord_).
           1. If _namespace_ is an abrupt completion, perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _namespace_.[[Value]] »).
           1. Otherwise, perform ! Call(_promiseCapability_.[[Resolve]], *undefined*, « _namespace_.[[Value]] »).
+        1. Upon rejection of _innerPromise_ with reason _r_,
+          1. Perform ! Call(_promiseCapability_.[[Reject]], *undefined*, « _r_ »).
       </emu-alg>
     </emu-clause>
   </emu-clause>
