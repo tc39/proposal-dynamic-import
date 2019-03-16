@@ -123,88 +123,25 @@ contributors: Domenic Denicola
   <h1>Left-Hand-Side Expressions</h1>
   <h2>Syntax</h2>
   <emu-grammar>
-    CallExpression[Yield] :
-      MemberExpression[?Yield] Arguments[?Yield]
-      SuperCall[?Yield]
-      <ins>ImportCall[?Yield]</ins>
-      CallExpression[?Yield] Arguments[?Yield]
-      CallExpression[?Yield] `[` Expression[+In, ?Yield] `]`
-      CallExpression[?Yield] `.` IdentifierName
-      CallExpression[?Yield] TemplateLiteral[?Yield]
+    CallExpression[Yield, Await] :
+      MemberExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
+      SuperCall[?Yield, ?Await]
+      <ins>ImportCall[?Yield, ?Await]</ins>
+      CallExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
+      CallExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
+      CallExpression[?Yield, ?Await] `.` IdentifierName
+      CallExpression[?Yield, ?Await] TemplateLiteral[?Yield, ?Await]
 
-    <ins>ImportCall[Yield] :
-      `import` `(` AssignmentExpression[+In, ?Yield] `)`</ins>
+    <ins>ImportCall[Yield, Await] :
+      `import` `(` AssignmentExpression[+In, ?Yield, ?Await] `)`</ins>
   </emu-grammar>
 
   <emu-clause id="sec-static-semantics">
     <h1>Static Semantics</h1>
 
-    <emu-clause id="sec-static-semantics-static-semantics-isfunctiondefinition">
-      <h1>Static Semantics: IsFunctionDefinition</h1>
-      <emu-see-also-para op="IsFunctionDefinition"></emu-see-also-para>
-      <emu-grammar>
-        MemberExpression :
-          MemberExpression `[` Expression `]`
-          MemberExpression `.` IdentifierName
-          MemberExpression TemplateLiteral
-          SuperProperty
-          MetaProperty
-          `new` MemberExpression Arguments
-
-        NewExpression :
-          `new` NewExpression
-
-        CallExpression :
-          MemberExpression Arguments
-          SuperCall
-          <ins>ImportCall</ins>
-          CallExpression Arguments
-          CallExpression `[` Expression `]`
-          CallExpression `.` IdentifierName
-          CallExpression TemplateLiteral
-      </emu-grammar>
-      <emu-alg>
-        1. Return *false*.
-      </emu-alg>
-    </emu-clause>
-
-    <emu-clause id="sec-static-semantics-static-semantics-isdestructuring">
-      <h1>Static Semantics: IsDestructuring</h1>
-      <emu-see-also-para op="IsDestructuring"></emu-see-also-para>
-      <emu-grammar>MemberExpression : PrimaryExpression</emu-grammar>
-      <emu-alg>
-        1. If |PrimaryExpression| is either an |ObjectLiteral| or an |ArrayLiteral|, return *true*.
-        1. Return *false*.
-      </emu-alg>
-      <emu-grammar>
-        MemberExpression :
-          MemberExpression `[` Expression `]`
-          MemberExpression `.` IdentifierName
-          MemberExpression TemplateLiteral
-          SuperProperty
-          MetaProperty
-          `new` MemberExpression Arguments
-
-        NewExpression :
-          `new` NewExpression
-
-        CallExpression :
-          MemberExpression Arguments
-          SuperCall
-          <ins>ImportCall</ins>
-          CallExpression Arguments
-          CallExpression `[` Expression `]`
-          CallExpression `.` IdentifierName
-          CallExpression TemplateLiteral
-      </emu-grammar>
-      <emu-alg>
-        1. Return *false*.
-      </emu-alg>
-    </emu-clause>
-
-    <emu-clause id="sec-static-semantics-static-semantics-isvalidsimpleassignmenttarget">
-      <h1>Static Semantics: IsValidSimpleAssignmentTarget</h1>
-      <emu-see-also-para op="IsValidSimpleAssignmentTarget"></emu-see-also-para>
+    <emu-clause oldids="sec-static-semantics-static-semantics-isvalidsimpleassignmenttarget" id="sec-static-semantics-static-semantics-assignmenttargettype">
+      <h1>Static Semantics: AssignmentTargetType</h1>
+      <emu-see-also-para op="AssignmentTargetType"></emu-see-also-para>
       <emu-grammar>
         CallExpression :
           CallExpression `[` Expression `]`
@@ -216,11 +153,11 @@ contributors: Domenic Denicola
           SuperProperty
       </emu-grammar>
       <emu-alg>
-        1. Return *true*.
+        1. Return ~simple~.
       </emu-alg>
       <emu-grammar>
         CallExpression :
-          MemberExpression Arguments
+          CoverCallExpressionAndAsyncArrowHead
           SuperCall
           <ins>ImportCall</ins>
           CallExpression Arguments
@@ -237,7 +174,7 @@ contributors: Domenic Denicola
           `new` `.` `target`
       </emu-grammar>
       <emu-alg>
-        1. Return *false*.
+        1. Return ~invalid~.
       </emu-alg>
     </emu-clause>
   </emu-clause>
