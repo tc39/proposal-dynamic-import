@@ -1,6 +1,6 @@
 # import()
 
-This repository contains a proposal for adding a "function-like" `import()` module loading syntactic form to JavaScript. It is currently in stage 3 of [the TC39 process](https://tc39.github.io/process-document/). Previously it was discussed with the module-loading community in [whatwg/loader#149](https://github.com/whatwg/loader/issues/149).
+This repository contains a proposal for adding a "function-like" `import()` module loading syntactic form to JavaScript. It is currently in stage 4 of [the TC39 process](https://tc39.github.io/process-document/). Previously it was discussed with the module-loading community in [whatwg/loader#149](https://github.com/whatwg/loader/issues/149).
 
 You can view the in-progress [spec draft](https://tc39.github.io/proposal-dynamic-import/) and take part in the discussions on the [issue tracker](https://github.com/tc39/proposal-dynamic-import/issues).
 
